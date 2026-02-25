@@ -9,6 +9,20 @@
 #include <stdatomic.h>
 #include <pthread.h>
 
+/*
+ * Safe ncurses helpers.
+ *
+ * ncurses functions silently accept NULL windows and return ERR; calling them
+ * on a NULL pointer is technically UB and can segfault on some implementations.
+ * WIN_OK guards every render call so we never touch an unallocated window.
+ *
+ * WCHK wraps wattron/wattroff/mvwprintw and the like: it evaluates the call
+ * and stores ERR returns in the dashboard's ncurses_errors counter so they
+ * can be surfaced in the stats overlay without aborting the render loop.
+ */
+#define WIN_OK(win)         ((win) != NULL)
+#define WCHK(d, call)       do { if ((call) == ERR) (d)->ncurses_errors++; } while(0)
+
 /* =========================================================================
  * Dashboard state (defined in soc_dashboard.c, used by render.c)
  * ====================================================================== */
@@ -64,6 +78,13 @@ typedef struct {
     _Atomic(bool)    quit;
     bool             stats_overlay;
     _Atomic(bool)    gen_paused;
+
+    /* Diagnostic counters */
+    u64              ncurses_errors;  /* ERR returns from ncurses ops */
+
+    /* Self-pipe for async-signal-safe SIGWINCH delivery */
+    int              sigpipe_r;       /* main loop reads from this fd */
+    int              sigpipe_w;       /* signal handler writes to this fd */
 } Dashboard;
 
 extern Dashboard g_dash;

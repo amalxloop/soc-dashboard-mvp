@@ -85,7 +85,12 @@ void layout_windows(void) {
 
     if (!d->w_header || !d->w_log || !d->w_net || !d->w_threat || !d->w_stats) {
         clear();
-        if (!d->w_header) mvprintw(0, 0, "[warn] header window allocation failed");
+        mvprintw(0, 0, "[error] window allocation failed: header=%s log=%s net=%s threat=%s stats=%s",
+                 d->w_header ? "ok" : "FAIL",
+                 d->w_log    ? "ok" : "FAIL",
+                 d->w_net    ? "ok" : "FAIL",
+                 d->w_threat ? "ok" : "FAIL",
+                 d->w_stats  ? "ok" : "FAIL");
         refresh();
     }
 }
@@ -95,17 +100,19 @@ void layout_windows(void) {
  * ====================================================================== */
 static void draw_box_title(WINDOW *win, const char *title,
                             int cp_border, int cp_title) {
-    wattron(win, COLOR_PAIR(cp_border));
+    if (!WIN_OK(win)) return;
+    Dashboard *d = &g_dash;
+    WCHK(d, wattron(win, COLOR_PAIR(cp_border)));
     box(win, 0, 0);
-    wattroff(win, COLOR_PAIR(cp_border));
+    WCHK(d, wattroff(win, COLOR_PAIR(cp_border)));
 
     int w    = getmaxx(win);
     int tlen = (int)strlen(title);
     int tx   = (w - tlen - 4) / 2;
     if (tx < 1) tx = 1;
-    wattron(win, COLOR_PAIR(cp_title) | A_BOLD);
-    mvwprintw(win, 0, tx, " %s ", title);
-    wattroff(win, COLOR_PAIR(cp_title) | A_BOLD);
+    WCHK(d, wattron(win, COLOR_PAIR(cp_title) | A_BOLD));
+    WCHK(d, mvwprintw(win, 0, tx, " %s ", title));
+    WCHK(d, wattroff(win, COLOR_PAIR(cp_title) | A_BOLD));
 }
 
 /* =========================================================================
@@ -114,34 +121,35 @@ static void draw_box_title(WINDOW *win, const char *title,
 void render_header(void) {
     Dashboard *d = &g_dash;
     WINDOW *w = d->w_header;
+    if (!WIN_OK(w)) return;
     werase(w);
 
-    wattron(w, COLOR_PAIR(CP_HEADER) | A_BOLD);
+    WCHK(d, wattron(w, COLOR_PAIR(CP_HEADER) | A_BOLD));
     int cols = getmaxx(w);
     for (int i = 0; i < cols; i++) mvwaddch(w, 0, i, ' ');
-    mvwprintw(w, 0, 2, "[ SilverCore SOC Dashboard MVP ]");
-    wattroff(w, COLOR_PAIR(CP_HEADER) | A_BOLD);
+    WCHK(d, mvwprintw(w, 0, 2, "[ SilverCore SOC Dashboard MVP ]"));
+    WCHK(d, wattroff(w, COLOR_PAIR(CP_HEADER) | A_BOLD));
 
-    wattron(w, COLOR_PAIR(CP_LOW) | A_BOLD);
-    mvwprintw(w, 0, 36, "FPS:%-4.0f", (double)d->last_fps);
-    wattroff(w, COLOR_PAIR(CP_LOW) | A_BOLD);
+    WCHK(d, wattron(w, COLOR_PAIR(CP_LOW) | A_BOLD));
+    WCHK(d, mvwprintw(w, 0, 36, "FPS:%-4.0f", (double)d->last_fps));
+    WCHK(d, wattroff(w, COLOR_PAIR(CP_LOW) | A_BOLD));
 
     int p99_cp = d->last_p99_ms < 10.0 ? CP_LOW :
                  d->last_p99_ms < 20.0 ? CP_MEDIUM : CP_CRITICAL;
-    wattron(w, COLOR_PAIR(p99_cp) | A_BOLD);
-    mvwprintw(w, 0, 45, "p99:%.2fms", d->last_p99_ms);
-    wattroff(w, COLOR_PAIR(p99_cp) | A_BOLD);
+    WCHK(d, wattron(w, COLOR_PAIR(p99_cp) | A_BOLD));
+    WCHK(d, mvwprintw(w, 0, 45, "p99:%.2fms", d->last_p99_ms));
+    WCHK(d, wattroff(w, COLOR_PAIR(p99_cp) | A_BOLD));
 
     u32 ring_fill = atomic_load(&d->log_write) & LOG_RING_MASK;
-    wattron(w, COLOR_PAIR(CP_INFO));
-    mvwprintw(w, 0, 56, "Ring:%u/%u", ring_fill, LOG_RING_SIZE);
-    wattroff(w, COLOR_PAIR(CP_INFO));
+    WCHK(d, wattron(w, COLOR_PAIR(CP_INFO)));
+    WCHK(d, mvwprintw(w, 0, 56, "Ring:%u/%u", ring_fill, LOG_RING_SIZE));
+    WCHK(d, wattroff(w, COLOR_PAIR(CP_INFO)));
 
-    wattron(w, COLOR_PAIR(CP_MEDIUM));
-    mvwprintw(w, 0, cols - 18, "Q:%-4u Events:%-6llu",
-              task_depth(&d->tasks),
-              (unsigned long long)atomic_load(&d->log_write));
-    wattroff(w, COLOR_PAIR(CP_MEDIUM));
+    WCHK(d, wattron(w, COLOR_PAIR(CP_MEDIUM)));
+    WCHK(d, mvwprintw(w, 0, cols - 18, "Q:%-4u Events:%-6llu",
+                task_depth(&d->tasks),
+                (unsigned long long)atomic_load(&d->log_write)));
+    WCHK(d, wattroff(w, COLOR_PAIR(CP_MEDIUM)));
 
     wnoutrefresh(w);
 }
@@ -152,15 +160,16 @@ void render_header(void) {
 void render_log(void) {
     Dashboard *d = &g_dash;
     WINDOW *w = d->w_log;
+    if (!WIN_OK(w)) return;
     int rows = getmaxy(w);
     int cols = getmaxx(w);
     werase(w);
     draw_box_title(w, "LIVE LOG STREAM", CP_BORDER, CP_TITLE);
 
-    wattron(w, COLOR_PAIR(CP_DIM) | A_UNDERLINE);
-    mvwprintw(w, 1, 2, "%-8s %-15s %-15s %-12s %-8s",
-              "AGE(s)", "SRC IP", "DST IP", "EVENT", "SEV");
-    wattroff(w, COLOR_PAIR(CP_DIM) | A_UNDERLINE);
+    WCHK(d, wattron(w, COLOR_PAIR(CP_DIM) | A_UNDERLINE));
+    WCHK(d, mvwprintw(w, 1, 2, "%-8s %-15s %-15s %-12s %-8s",
+                "AGE(s)", "SRC IP", "DST IP", "EVENT", "SEV"));
+    WCHK(d, wattroff(w, COLOR_PAIR(CP_DIM) | A_UNDERLINE));
 
     int visible = rows - 3;
     if (visible > LOG_VISIBLE_ROWS) visible = LOG_VISIBLE_ROWS;
@@ -182,11 +191,11 @@ void render_log(void) {
         if (display_row >= rows - 1) break;
 
         if (ev->sev == SEV_CRITICAL) {
-            wattron(w, COLOR_PAIR(CP_CRITICAL) | A_BOLD);
+            WCHK(d, wattron(w, COLOR_PAIR(CP_CRITICAL) | A_BOLD));
         } else if (ev->sev == SEV_HIGH) {
-            wattron(w, COLOR_PAIR(CP_HIGH) | A_BOLD);
+            WCHK(d, wattron(w, COLOR_PAIR(CP_HIGH) | A_BOLD));
         } else {
-            wattron(w, COLOR_PAIR(CP_NORMAL));
+            WCHK(d, wattron(w, COLOR_PAIR(CP_NORMAL)));
         }
 
         char line[128];
@@ -197,14 +206,14 @@ void render_log(void) {
         if (llen > 0) mvwaddnstr(w, display_row, 2, line, llen);
 
         if (ev->sev == SEV_CRITICAL || ev->sev == SEV_HIGH) {
-            wattroff(w, COLOR_PAIR(ev->sev == SEV_CRITICAL ? CP_CRITICAL : CP_HIGH) | A_BOLD);
+            WCHK(d, wattroff(w, COLOR_PAIR(ev->sev == SEV_CRITICAL ? CP_CRITICAL : CP_HIGH) | A_BOLD));
         } else {
-            wattroff(w, COLOR_PAIR(CP_NORMAL));
+            WCHK(d, wattroff(w, COLOR_PAIR(CP_NORMAL)));
         }
 
-        wattron(w, COLOR_PAIR(sev_cp[ev->sev]) | A_BOLD);
-        mvwprintw(w, display_row, cols - 10, "%-8s", k_sev_name[ev->sev]);
-        wattroff(w, COLOR_PAIR(sev_cp[ev->sev]) | A_BOLD);
+        WCHK(d, wattron(w, COLOR_PAIR(sev_cp[ev->sev]) | A_BOLD));
+        WCHK(d, mvwprintw(w, display_row, cols - 10, "%-8s", k_sev_name[ev->sev]));
+        WCHK(d, wattroff(w, COLOR_PAIR(sev_cp[ev->sev]) | A_BOLD));
     }
 
     wnoutrefresh(w);
@@ -216,18 +225,19 @@ void render_log(void) {
 void render_threats(void) {
     Dashboard *d = &g_dash;
     WINDOW *w = d->w_threat;
+    if (!WIN_OK(w)) return;
     int rows = getmaxy(w);
     int cols = getmaxx(w);
     werase(w);
     draw_box_title(w, "ACTIVE THREATS", CP_ALERT_HI, CP_ALERT_CR);
 
-    wattron(w, COLOR_PAIR(CP_MEDIUM) | A_BOLD);
-    mvwprintw(w, 1, 2, "Total alerts: %-4u", d->alert_count);
-    wattroff(w, COLOR_PAIR(CP_MEDIUM) | A_BOLD);
+    WCHK(d, wattron(w, COLOR_PAIR(CP_MEDIUM) | A_BOLD));
+    WCHK(d, mvwprintw(w, 1, 2, "Total alerts: %-4u", d->alert_count));
+    WCHK(d, wattroff(w, COLOR_PAIR(CP_MEDIUM) | A_BOLD));
 
-    wattron(w, COLOR_PAIR(CP_DIM) | A_UNDERLINE);
-    mvwprintw(w, 2, 2, "%-6s %-8s %-22s %-8s", "#ID", "SEV", "DESCRIPTION", "AGE");
-    wattroff(w, COLOR_PAIR(CP_DIM) | A_UNDERLINE);
+    WCHK(d, wattron(w, COLOR_PAIR(CP_DIM) | A_UNDERLINE));
+    WCHK(d, mvwprintw(w, 2, 2, "%-6s %-8s %-22s %-8s", "#ID", "SEV", "DESCRIPTION", "AGE"));
+    WCHK(d, wattroff(w, COLOR_PAIR(CP_DIM) | A_UNDERLINE));
 
     u64 now    = now_ns();
     int visible = rows - 4;
@@ -246,7 +256,7 @@ void render_threats(void) {
         int cp = (al->sev == SEV_CRITICAL) ? CP_ALERT_CR :
                  (al->sev == SEV_HIGH)     ? CP_ALERT_HI : CP_MEDIUM;
         attr_t attrs = COLOR_PAIR(cp) | (flashing ? A_REVERSE | A_BOLD : A_NORMAL);
-        wattron(w, attrs);
+        WCHK(d, wattron(w, attrs));
 
         for (int c = 1; c < cols - 1; c++) mvwaddch(w, display_row, c, ' ');
 
@@ -262,10 +272,10 @@ void render_threats(void) {
         char desc_trunc[23];
         snprintf(desc_trunc, sizeof(desc_trunc), "%s", al->desc);
 
-        mvwprintw(w, display_row, 2, "#%-5u %-8s %-22s %-8s",
-                  al->id, k_sev_name[al->sev], desc_trunc, age_buf);
+        WCHK(d, mvwprintw(w, display_row, 2, "#%-5u %-8s %-22s %-8s",
+                    al->id, k_sev_name[al->sev], desc_trunc, age_buf));
 
-        wattroff(w, attrs);
+        WCHK(d, wattroff(w, attrs));
     }
 
     wnoutrefresh(w);
@@ -277,32 +287,33 @@ void render_threats(void) {
 void render_network(void) {
     Dashboard *d = &g_dash;
     WINDOW *w = d->w_net;
+    if (!WIN_OK(w)) return;
     int rows = getmaxy(w);
     int cols = getmaxx(w);
     werase(w);
     draw_box_title(w, "NETWORK GRAPH  [h=host e=ext X=suspicious]",
                    CP_BORDER, CP_TITLE);
 
-    wattron(w, COLOR_PAIR(CP_NET_NODE));
+    WCHK(d, wattron(w, COLOR_PAIR(CP_NET_NODE)));
     mvwaddstr(w, 1, 2, "h");
-    wattroff(w, COLOR_PAIR(CP_NET_NODE));
+    WCHK(d, wattroff(w, COLOR_PAIR(CP_NET_NODE)));
     waddstr(w, "-internal  ");
-    wattron(w, COLOR_PAIR(CP_NET_EXT));
+    WCHK(d, wattron(w, COLOR_PAIR(CP_NET_EXT)));
     waddstr(w, "e");
-    wattroff(w, COLOR_PAIR(CP_NET_EXT));
+    WCHK(d, wattroff(w, COLOR_PAIR(CP_NET_EXT)));
     waddstr(w, "-external  ");
-    wattron(w, COLOR_PAIR(CP_NET_SUSP) | A_BOLD);
+    WCHK(d, wattron(w, COLOR_PAIR(CP_NET_SUSP) | A_BOLD));
     waddstr(w, "X");
-    wattroff(w, COLOR_PAIR(CP_NET_SUSP) | A_BOLD);
+    WCHK(d, wattroff(w, COLOR_PAIR(CP_NET_SUSP) | A_BOLD));
     waddstr(w, "-suspicious  ");
 
     u32 susp_nodes = 0, susp_edges = 0;
     for (u32 i = 0; i < d->node_count; i++) if (d->nodes[i].suspicious) susp_nodes++;
     for (u32 i = 0; i < d->edge_count; i++) if (d->edges[i].suspicious) susp_edges++;
-    wattron(w, COLOR_PAIR(CP_INFO));
-    mvwprintw(w, 1, cols - 28,
-              "suspicious: %u nodes / %u edges", susp_nodes, susp_edges);
-    wattroff(w, COLOR_PAIR(CP_INFO));
+    WCHK(d, wattron(w, COLOR_PAIR(CP_INFO)));
+    WCHK(d, mvwprintw(w, 1, cols - 28,
+                "suspicious: %u nodes / %u edges", susp_nodes, susp_edges));
+    WCHK(d, wattroff(w, COLOR_PAIR(CP_INFO)));
 
     int can_start_row = 2;
     int can_start_col = 2;
@@ -319,21 +330,21 @@ void render_network(void) {
             if (pr >= rows - 1 || pc >= cols - 1) continue;
 
             if (susp && (ch == 'X' || ch == '*')) {
-                wattron(w, COLOR_PAIR(CP_NET_SUSP) | A_BOLD);
+                WCHK(d, wattron(w, COLOR_PAIR(CP_NET_SUSP) | A_BOLD));
                 mvwaddch(w, pr, pc, ch);
-                wattroff(w, COLOR_PAIR(CP_NET_SUSP) | A_BOLD);
+                WCHK(d, wattroff(w, COLOR_PAIR(CP_NET_SUSP) | A_BOLD));
             } else if (ch == 'h') {
-                wattron(w, COLOR_PAIR(CP_NET_NODE) | A_BOLD);
+                WCHK(d, wattron(w, COLOR_PAIR(CP_NET_NODE) | A_BOLD));
                 mvwaddch(w, pr, pc, ch);
-                wattroff(w, COLOR_PAIR(CP_NET_NODE) | A_BOLD);
+                WCHK(d, wattroff(w, COLOR_PAIR(CP_NET_NODE) | A_BOLD));
             } else if (ch == 'e') {
-                wattron(w, COLOR_PAIR(CP_NET_EXT));
+                WCHK(d, wattron(w, COLOR_PAIR(CP_NET_EXT)));
                 mvwaddch(w, pr, pc, ch);
-                wattroff(w, COLOR_PAIR(CP_NET_EXT));
+                WCHK(d, wattroff(w, COLOR_PAIR(CP_NET_EXT)));
             } else if (ch == '.') {
-                wattron(w, COLOR_PAIR(CP_CANVAS_BG));
+                WCHK(d, wattron(w, COLOR_PAIR(CP_CANVAS_BG)));
                 mvwaddch(w, pr, pc, ch);
-                wattroff(w, COLOR_PAIR(CP_CANVAS_BG));
+                WCHK(d, wattroff(w, COLOR_PAIR(CP_CANVAS_BG)));
             } else if (ch != ' ') {
                 mvwaddch(w, pr, pc, ch);
             }
@@ -349,50 +360,51 @@ void render_network(void) {
 void render_stats(void) {
     Dashboard *d = &g_dash;
     WINDOW *w = d->w_stats;
+    if (!WIN_OK(w)) return;
     int cols = getmaxx(w);
     werase(w);
 
-    wattron(w, COLOR_PAIR(CP_STATS) | A_BOLD);
+    WCHK(d, wattron(w, COLOR_PAIR(CP_STATS) | A_BOLD));
     for (int c = 0; c < cols; c++) mvwaddch(w, 0, c, ' ');
     mvwaddch(w, 0, 0, ACS_HLINE);
 
     int x = 1;
-    mvwprintw(w, 0, x, " FPS:%.0f ", (double)d->last_fps);
+    WCHK(d, mvwprintw(w, 0, x, " FPS:%.0f ", (double)d->last_fps));
     x += 10;
 
     int p99_cp = d->last_p99_ms < 10.0 ? CP_LOW :
                  d->last_p99_ms < 20.0 ? CP_MEDIUM : CP_CRITICAL;
-    wattroff(w, COLOR_PAIR(CP_STATS) | A_BOLD);
-    wattron(w, COLOR_PAIR(p99_cp) | A_BOLD);
-    mvwprintw(w, 0, x, " p99:%.2fms ", d->last_p99_ms);
+    WCHK(d, wattroff(w, COLOR_PAIR(CP_STATS) | A_BOLD));
+    WCHK(d, wattron(w, COLOR_PAIR(p99_cp) | A_BOLD));
+    WCHK(d, mvwprintw(w, 0, x, " p99:%.2fms ", d->last_p99_ms));
     x += 14;
-    wattroff(w, COLOR_PAIR(p99_cp) | A_BOLD);
+    WCHK(d, wattroff(w, COLOR_PAIR(p99_cp) | A_BOLD));
 
     u32 ring_fill = atomic_load(&d->log_write) & LOG_RING_MASK;
-    wattron(w, COLOR_PAIR(CP_INFO) | A_BOLD);
-    mvwprintw(w, 0, x, " Ring:%u/%u ", ring_fill, LOG_RING_SIZE);
+    WCHK(d, wattron(w, COLOR_PAIR(CP_INFO) | A_BOLD));
+    WCHK(d, mvwprintw(w, 0, x, " Ring:%u/%u ", ring_fill, LOG_RING_SIZE));
     x += 18;
 
-    wattron(w, COLOR_PAIR(CP_MEDIUM) | A_BOLD);
-    mvwprintw(w, 0, x, " Queue:%u ", task_depth(&d->tasks));
+    WCHK(d, wattron(w, COLOR_PAIR(CP_MEDIUM) | A_BOLD));
+    WCHK(d, mvwprintw(w, 0, x, " Queue:%u ", task_depth(&d->tasks)));
     x += 12;
 
-    wattron(w, COLOR_PAIR(CP_LOW) | A_BOLD);
-    mvwprintw(w, 0, x, " Alerts:%u ", d->alert_count);
+    WCHK(d, wattron(w, COLOR_PAIR(CP_LOW) | A_BOLD));
+    WCHK(d, mvwprintw(w, 0, x, " Alerts:%u ", d->alert_count));
     x += 12;
 
-    wattron(w, COLOR_PAIR(CP_DIM));
-    mvwprintw(w, 0, x, " Frames:%llu ", (unsigned long long)d->frame_count);
+    WCHK(d, wattron(w, COLOR_PAIR(CP_DIM)));
+    WCHK(d, mvwprintw(w, 0, x, " Frames:%llu ", (unsigned long long)d->frame_count));
     x += 16;
 
-    wattron(w, COLOR_PAIR(CP_INFO));
-    mvwprintw(w, 0, x, " ~%u-%u evt/min ",
-              EVT_PER_SEC_LO * 60, EVT_PER_SEC_HI * 60);
+    WCHK(d, wattron(w, COLOR_PAIR(CP_INFO)));
+    WCHK(d, mvwprintw(w, 0, x, " ~%u-%u evt/min ",
+                EVT_PER_SEC_LO * 60, EVT_PER_SEC_HI * 60));
 
     bool pass = d->last_fps >= 55.0f && d->last_p99_ms < 20.0;
-    wattron(w, pass ? (COLOR_PAIR(CP_LOW) | A_BOLD) : (COLOR_PAIR(CP_CRITICAL) | A_BOLD));
-    mvwprintw(w, 0, cols - 10, pass ? " [PASS] " : " [FAIL] ");
-    wattroff(w, A_BOLD);
+    WCHK(d, wattron(w, pass ? (COLOR_PAIR(CP_LOW) | A_BOLD) : (COLOR_PAIR(CP_CRITICAL) | A_BOLD)));
+    WCHK(d, mvwprintw(w, 0, cols - 10, pass ? " [PASS] " : " [FAIL] "));
+    WCHK(d, wattroff(w, A_BOLD));
 
     wnoutrefresh(w);
 }
@@ -407,8 +419,8 @@ void render_stats_overlay(void) {
     int rows = d->term_rows;
     int cols = d->term_cols;
 
-    int pop_h = 18;
-    int pop_w = 60;
+    int pop_h = 20;
+    int pop_w = 62;
     int pop_y = (rows - pop_h) / 2;
     int pop_x = (cols - pop_w) / 2;
     if (pop_y < 0) pop_y = 0;
@@ -418,74 +430,81 @@ void render_stats_overlay(void) {
     if (!pop) return;
 
     wbkgd(pop, COLOR_PAIR(CP_NORMAL));
-    wattron(pop, COLOR_PAIR(CP_BORDER) | A_BOLD);
+    WCHK(d, wattron(pop, COLOR_PAIR(CP_BORDER) | A_BOLD));
     box(pop, 0, 0);
 
-    wattron(pop, COLOR_PAIR(CP_TITLE) | A_BOLD | A_REVERSE);
-    mvwprintw(pop, 0, (pop_w - 28) / 2, "  SESSION STATS  [s]=close  ");
-    wattroff(pop, A_REVERSE);
+    WCHK(d, wattron(pop, COLOR_PAIR(CP_TITLE) | A_BOLD | A_REVERSE));
+    WCHK(d, mvwprintw(pop, 0, (pop_w - 28) / 2, "  SESSION STATS  [s]=close  "));
+    WCHK(d, wattroff(pop, A_REVERSE));
 
     int ln = 2;
 
     bool fps_ok = d->last_fps >= 55.0f;
-    wattron(pop, fps_ok ? COLOR_PAIR(CP_LOW) : COLOR_PAIR(CP_CRITICAL));
-    mvwprintw(pop, ln++, 3, "  FPS              : %.1f %s",
-              (double)d->last_fps, fps_ok ? "[OK]" : "[LOW]");
+    WCHK(d, wattron(pop, fps_ok ? COLOR_PAIR(CP_LOW) : COLOR_PAIR(CP_CRITICAL)));
+    WCHK(d, mvwprintw(pop, ln++, 3, "  FPS              : %.1f %s",
+                (double)d->last_fps, fps_ok ? "[OK]" : "[LOW]"));
 
     bool p99_ok = d->last_p99_ms < 20.0;
-    wattron(pop, p99_ok ? COLOR_PAIR(CP_LOW) : COLOR_PAIR(CP_CRITICAL));
-    mvwprintw(pop, ln++, 3, "  p99 frame time   : %.2f ms %s",
-              d->last_p99_ms, p99_ok ? "[PASS]" : "[FAIL]");
+    WCHK(d, wattron(pop, p99_ok ? COLOR_PAIR(CP_LOW) : COLOR_PAIR(CP_CRITICAL)));
+    WCHK(d, mvwprintw(pop, ln++, 3, "  p99 frame time   : %.2f ms %s",
+                d->last_p99_ms, p99_ok ? "[PASS]" : "[FAIL]"));
 
-    wattron(pop, COLOR_PAIR(CP_INFO));
-    mvwprintw(pop, ln++, 3, "  Frames rendered  : %llu",
-              (unsigned long long)d->frame_count);
+    WCHK(d, wattron(pop, COLOR_PAIR(CP_INFO)));
+    WCHK(d, mvwprintw(pop, ln++, 3, "  Frames rendered  : %llu",
+                (unsigned long long)d->frame_count));
 
     u32 log_write = atomic_load(&d->log_write);
     u32 ring_fill = log_write & LOG_RING_MASK;
     f32 ring_pct  = (f32)ring_fill / LOG_RING_SIZE * 100.0f;
-    wattron(pop, COLOR_PAIR(CP_MEDIUM));
-    mvwprintw(pop, ln++, 3, "  Log ring fill    : %u / %u  (%.1f%%)",
-              ring_fill, LOG_RING_SIZE, (double)ring_pct);
-    mvwprintw(pop, ln++, 3, "  Total log writes : %u", log_write);
+    WCHK(d, wattron(pop, COLOR_PAIR(CP_MEDIUM)));
+    WCHK(d, mvwprintw(pop, ln++, 3, "  Log ring fill    : %u / %u  (%.1f%%)",
+                ring_fill, LOG_RING_SIZE, (double)ring_pct));
+    WCHK(d, mvwprintw(pop, ln++, 3, "  Total log writes : %u", log_write));
 
-    wattron(pop, COLOR_PAIR(CP_INFO));
-    mvwprintw(pop, ln++, 3, "  Task queue depth : %u", task_depth(&d->tasks));
+    WCHK(d, wattron(pop, COLOR_PAIR(CP_INFO)));
+    WCHK(d, mvwprintw(pop, ln++, 3, "  Task queue depth : %u", task_depth(&d->tasks)));
 
-    wattron(pop, COLOR_PAIR(CP_HIGH));
+    WCHK(d, wattron(pop, COLOR_PAIR(CP_HIGH)));
     u32 crit = 0, high = 0, med = 0;
     for (u32 i = 0; i < d->alert_count && i < THREAT_MAX; i++) {
         if      (d->alerts[i].sev == SEV_CRITICAL) crit++;
         else if (d->alerts[i].sev == SEV_HIGH)     high++;
         else if (d->alerts[i].sev == SEV_MEDIUM)   med++;
     }
-    mvwprintw(pop, ln++, 3, "  Total alerts     : %u  (CRIT:%u  HIGH:%u  MED:%u)",
-              d->alert_count, crit, high, med);
+    WCHK(d, mvwprintw(pop, ln++, 3, "  Total alerts     : %u  (CRIT:%u  HIGH:%u  MED:%u)",
+                d->alert_count, crit, high, med));
 
     u32 susp_nodes = 0;
     for (u32 i = 0; i < NET_MAX_NODES; i++)
         if (d->nodes[i].suspicious) susp_nodes++;
-    wattron(pop, COLOR_PAIR(CP_MEDIUM));
-    mvwprintw(pop, ln++, 3, "  Network nodes    : %u  (suspicious: %u)",
-              d->node_count, susp_nodes);
+    WCHK(d, wattron(pop, COLOR_PAIR(CP_MEDIUM)));
+    WCHK(d, mvwprintw(pop, ln++, 3, "  Network nodes    : %u  (suspicious: %u)",
+                d->node_count, susp_nodes));
 
     bool paused = atomic_load(&d->gen_paused);
-    wattron(pop, paused ? (COLOR_PAIR(CP_CRITICAL) | A_BOLD)
-                        : (COLOR_PAIR(CP_LOW)      | A_BOLD));
-    mvwprintw(pop, ln++, 3, "  Generator        : %s  [p]=toggle",
-              paused ? "PAUSED" : "RUNNING");
+    WCHK(d, wattron(pop, paused ? (COLOR_PAIR(CP_CRITICAL) | A_BOLD)
+                                : (COLOR_PAIR(CP_LOW)      | A_BOLD)));
+    WCHK(d, mvwprintw(pop, ln++, 3, "  Generator        : %s  [p]=toggle",
+                paused ? "PAUSED" : "RUNNING"));
 
-    wattron(pop, COLOR_PAIR(CP_DIM));
-    mvwprintw(pop, ln++, 3, "  Event rate       : ~%u - %u evt/min",
-              EVT_PER_SEC_LO * 60, EVT_PER_SEC_HI * 60);
+    WCHK(d, wattron(pop, COLOR_PAIR(CP_DIM)));
+    WCHK(d, mvwprintw(pop, ln++, 3, "  Event rate       : ~%u - %u evt/min",
+                EVT_PER_SEC_LO * 60, EVT_PER_SEC_HI * 60));
+
+    /* ncurses error counter - shows 0 when everything is healthy */
+    int err_cp = d->ncurses_errors == 0 ? CP_LOW : CP_CRITICAL;
+    WCHK(d, wattron(pop, COLOR_PAIR(err_cp)));
+    WCHK(d, mvwprintw(pop, ln++, 3, "  ncurses errors   : %llu %s",
+                (unsigned long long)d->ncurses_errors,
+                d->ncurses_errors == 0 ? "[OK]" : "[CHECK TERMINAL SIZE]"));
 
     ln++;
     bool pass = fps_ok && p99_ok;
-    wattron(pop, pass ? (COLOR_PAIR(CP_LOW) | A_BOLD) : (COLOR_PAIR(CP_CRITICAL) | A_BOLD));
-    mvwprintw(pop, ln++, 3, "  Overall          : %s",
-              pass ? "[ PASS ]  All targets met" : "[ FAIL ]  Check FPS / p99");
+    WCHK(d, wattron(pop, pass ? (COLOR_PAIR(CP_LOW) | A_BOLD) : (COLOR_PAIR(CP_CRITICAL) | A_BOLD)));
+    WCHK(d, mvwprintw(pop, ln++, 3, "  Overall          : %s",
+                pass ? "[ PASS ]  All targets met" : "[ FAIL ]  Check FPS / p99"));
 
-    wattroff(pop, A_BOLD);
+    WCHK(d, wattroff(pop, A_BOLD));
     wnoutrefresh(pop);
     doupdate();
     delwin(pop);

@@ -34,6 +34,8 @@
 #include <stdatomic.h>
 #include <signal.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
 
 /* =========================================================================
  * Global singletons
@@ -271,13 +273,51 @@ static f64 compute_p99(void) {
 }
 
 /* =========================================================================
- * Signal handling
+ * Signal handling -- self-pipe trick
+ *
+ * The signal handler is intentionally minimal: it only calls write(2), which
+ * is async-signal-safe (POSIX.1 Table 21-1).  No global state is mutated, no
+ * ncurses functions are called, and there is no race with the main loop.
+ *
+ * The main loop uses select(2) with a short timeout to wake immediately when
+ * a byte arrives on sigpipe_r instead of busy-polling or sleeping a full
+ * frame period after a resize.
  * ====================================================================== */
-static volatile sig_atomic_t g_resize_pending = 0;
-
 static void handle_sigwinch(int sig) {
     (void)sig;
-    g_resize_pending = 1;
+    /* write a single byte; main loop drains and triggers layout_windows() */
+    char byte = 'R';
+    (void)write(g_dash.sigpipe_w, &byte, 1);
+}
+
+static void sigpipe_init(void) {
+    int fds[2];
+    if (pipe(fds) != 0) {
+        /* non-fatal: resize events won't be instant, but the flag path works */
+        g_dash.sigpipe_r = -1;
+        g_dash.sigpipe_w = -1;
+        return;
+    }
+    /* Make both ends non-blocking so write() in the handler never blocks */
+    fcntl(fds[0], F_SETFL, O_NONBLOCK);
+    fcntl(fds[1], F_SETFL, O_NONBLOCK);
+    g_dash.sigpipe_r = fds[0];
+    g_dash.sigpipe_w = fds[1];
+}
+
+static void sigpipe_drain(void) {
+    if (g_dash.sigpipe_r < 0) return;
+    char buf[64];
+    while (read(g_dash.sigpipe_r, buf, sizeof(buf)) > 0) { /* drain */ }
+}
+
+static bool sigpipe_readable(int fd) {
+    if (fd < 0) return false;
+    fd_set rfds;
+    FD_ZERO(&rfds);
+    FD_SET(fd, &rfds);
+    struct timeval tv = {0, 0};
+    return select(fd + 1, &rfds, NULL, NULL, &tv) > 0;
 }
 
 /* =========================================================================
@@ -330,7 +370,10 @@ int main(int argc, char **argv) {
 
     Dashboard *d = &g_dash;
     memset(d, 0, sizeof(*d));
+    d->sigpipe_r = -1;
+    d->sigpipe_w = -1;
 
+    sigpipe_init();
     net_init();
 
     initscr();
@@ -378,8 +421,8 @@ int main(int argc, char **argv) {
             bool cur = atomic_load(&d->gen_paused);
             atomic_store(&d->gen_paused, !cur);
         }
-        if (ch == KEY_RESIZE || g_resize_pending) {
-            g_resize_pending = 0;
+        if (ch == KEY_RESIZE || sigpipe_readable(d->sigpipe_r)) {
+            sigpipe_drain();
             endwin();
             refresh();
             clear();
@@ -435,6 +478,9 @@ int main(int argc, char **argv) {
     if (d->w_net)    delwin(d->w_net);
     if (d->w_stats)  delwin(d->w_stats);
     endwin();
+
+    if (d->sigpipe_r >= 0) close(d->sigpipe_r);
+    if (d->sigpipe_w >= 0) close(d->sigpipe_w);
 
     printf("\n=== SilverCore SOC Dashboard - Session Stats ===\n");
     printf("  Frames rendered : %llu\n", (unsigned long long)d->frame_count);

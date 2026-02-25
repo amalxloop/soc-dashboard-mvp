@@ -9,15 +9,20 @@ CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.o: /home/kiraxploit/orc
   /usr/include/alloca.h \
   /usr/include/bits/atomic_wide_counter.h \
   /usr/include/bits/byteswap.h \
+  /usr/include/bits/cpu-set.h \
   /usr/include/bits/endian.h \
   /usr/include/bits/endianness.h \
   /usr/include/bits/floatn-common.h \
   /usr/include/bits/floatn.h \
   /usr/include/bits/libc-header-start.h \
   /usr/include/bits/long-double.h \
+  /usr/include/bits/pthread_stack_min-dynamic.h \
+  /usr/include/bits/pthread_stack_min.h \
   /usr/include/bits/pthreadtypes-arch.h \
   /usr/include/bits/pthreadtypes.h \
+  /usr/include/bits/sched.h \
   /usr/include/bits/select.h \
+  /usr/include/bits/setjmp.h \
   /usr/include/bits/stdint-intn.h \
   /usr/include/bits/stdint-least.h \
   /usr/include/bits/stdint-uintn.h \
@@ -45,7 +50,9 @@ CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.o: /home/kiraxploit/orc
   /usr/include/bits/types/locale_t.h \
   /usr/include/bits/types/sigset_t.h \
   /usr/include/bits/types/struct_FILE.h \
+  /usr/include/bits/types/struct___jmp_buf_tag.h \
   /usr/include/bits/types/struct_itimerspec.h \
+  /usr/include/bits/types/struct_sched_param.h \
   /usr/include/bits/types/struct_timespec.h \
   /usr/include/bits/types/struct_timeval.h \
   /usr/include/bits/types/struct_tm.h \
@@ -64,6 +71,8 @@ CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.o: /home/kiraxploit/orc
   /usr/include/gnu/stubs-64.h \
   /usr/include/gnu/stubs.h \
   /usr/include/ncurses_dll.h \
+  /usr/include/pthread.h \
+  /usr/include/sched.h \
   /usr/include/stdc-predef.h \
   /usr/include/stdint.h \
   /usr/include/stdio.h \
@@ -174,6 +183,8 @@ CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o: /home/kiraxpl
   /usr/include/bits/endian.h \
   /usr/include/bits/endianness.h \
   /usr/include/bits/environments.h \
+  /usr/include/bits/fcntl-linux.h \
+  /usr/include/bits/fcntl.h \
   /usr/include/bits/floatn-common.h \
   /usr/include/bits/floatn.h \
   /usr/include/bits/flt-eval-method.h \
@@ -208,6 +219,7 @@ CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o: /home/kiraxpl
   /usr/include/bits/sigstksz.h \
   /usr/include/bits/sigthread.h \
   /usr/include/bits/ss_flags.h \
+  /usr/include/bits/stat.h \
   /usr/include/bits/stdint-intn.h \
   /usr/include/bits/stdint-least.h \
   /usr/include/bits/stdint-uintn.h \
@@ -217,6 +229,7 @@ CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o: /home/kiraxpl
   /usr/include/bits/stdlib-float.h \
   /usr/include/bits/struct_mutex.h \
   /usr/include/bits/struct_rwlock.h \
+  /usr/include/bits/struct_stat.h \
   /usr/include/bits/thread-shared-types.h \
   /usr/include/bits/time.h \
   /usr/include/bits/time64.h \
@@ -259,6 +272,7 @@ CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o: /home/kiraxpl
   /usr/include/bits/wordsize.h \
   /usr/include/curses.h \
   /usr/include/endian.h \
+  /usr/include/fcntl.h \
   /usr/include/features-time64.h \
   /usr/include/features.h \
   /usr/include/gnu/stubs-64.h \
@@ -308,8 +322,14 @@ soc_dashboard: /lib64/ld-linux-x86-64.so.2 \
   /usr/lib/gcc/x86_64-redhat-linux/15/libgcc_s.so \
   /usr/lib64/libc_nonshared.a \
   /usr/lib64/libform.so \
+  CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.o \
+  CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/rng.c.o \
   CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o
 
+
+CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/rng.c.o:
+
+CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.o:
 
 /usr/lib64/libform.so:
 
@@ -345,14 +365,6 @@ soc_dashboard: /lib64/ld-linux-x86-64.so.2 \
 
 /usr/include/bits/types/struct_sigstack.h:
 
-/usr/include/curses.h:
-
-/usr/include/bits/sigcontext.h:
-
-/usr/include/endian.h:
-
-/usr/include/bits/types/cookie_io_functions_t.h:
-
 /usr/include/bits/types/timer_t.h:
 
 /usr/include/stdio.h:
@@ -371,11 +383,19 @@ CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o:
 
 /usr/include/bits/sigevent-consts.h:
 
+/usr/include/bits/types/struct_sched_param.h:
+
+/usr/include/bits/waitflags.h:
+
 /usr/include/bits/types/locale_t.h:
 
 /usr/include/bits/uintn-identity.h:
 
 /home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/types.h:
+
+/usr/include/bits/types/cookie_io_functions_t.h:
+
+/usr/include/endian.h:
 
 /usr/include/bits/types/clockid_t.h:
 
@@ -383,7 +403,7 @@ CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o:
 
 /usr/include/sched.h:
 
-/usr/include/bits/wordsize.h:
+/usr/include/bits/setjmp.h:
 
 /usr/include/bits/types/__FILE.h:
 
@@ -393,21 +413,9 @@ CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o:
 
 /usr/include/bits/siginfo-arch.h:
 
-/usr/include/bits/waitstatus.h:
-
-/usr/include/bits/timesize.h:
-
-/usr/include/bits/endian.h:
-
-/usr/lib64/libcurses.so:
-
-/usr/include/bits/types/__sigval_t.h:
+/usr/include/bits/thread-shared-types.h:
 
 /usr/include/bits/floatn-common.h:
-
-/usr/include/bits/waitflags.h:
-
-/usr/include/bits/types/struct_sched_param.h:
 
 /usr/include/bits/struct_rwlock.h:
 
@@ -417,33 +425,23 @@ CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o:
 
 /usr/include/bits/types/__sigset_t.h:
 
-/usr/lib64/libncurses.so.6:
+/usr/include/bits/endian.h:
 
-/usr/include/bits/libc-header-start.h:
+/usr/lib64/libcurses.so:
 
-/usr/include/bits/siginfo-consts.h:
+/usr/include/bits/types/__sigval_t.h:
 
 /usr/include/bits/stdint-intn.h:
 
 /usr/include/bits/sigstksz.h:
 
-/usr/include/features-time64.h:
+/usr/include/bits/stdlib-float.h:
 
-/usr/include/bits/types/__fpos64_t.h:
+/usr/include/bits/time64.h:
 
-/usr/include/bits/select.h:
+/usr/include/bits/mathcalls-helper-functions.h:
 
-/usr/include/bits/struct_mutex.h:
-
-/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/rng.h:
-
-/usr/include/bits/endianness.h:
-
-/usr/include/features.h:
-
-/usr/include/bits/stdint-uintn.h:
-
-/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/render.h:
+/usr/include/string.h:
 
 /usr/include/bits/stdio_lim.h:
 
@@ -461,13 +459,23 @@ CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o:
 
 /usr/lib/gcc/x86_64-redhat-linux/15/include/stdint.h:
 
-/usr/include/bits/stdlib-float.h:
+/usr/include/bits/types/__fpos64_t.h:
 
-/usr/include/bits/time64.h:
+/usr/include/bits/select.h:
 
-/usr/include/bits/mathcalls-helper-functions.h:
+/usr/include/bits/struct_mutex.h:
 
-/usr/include/string.h:
+/usr/include/bits/long-double.h:
+
+/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/rng.h:
+
+/usr/include/bits/endianness.h:
+
+/usr/include/features.h:
+
+/usr/include/bits/stdint-uintn.h:
+
+/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/render.h:
 
 /usr/include/bits/floatn.h:
 
@@ -481,15 +489,27 @@ CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o:
 
 /usr/include/bits/stdint-least.h:
 
-/usr/include/bits/long-double.h:
+/usr/lib64/libncurses.so.6:
+
+/usr/include/bits/libc-header-start.h:
+
+/usr/include/bits/siginfo-consts.h:
+
+/usr/include/bits/sigthread.h:
+
+/usr/include/bits/pthread_stack_min.h:
+
+/usr/include/bits/pthread_stack_min-dynamic.h:
 
 /usr/include/stdc-predef.h:
+
+/usr/include/bits/types/struct___jmp_buf_tag.h:
+
+/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/soc_dashboard.c:
 
 /usr/include/bits/stdio.h:
 
 /usr/include/bits/unistd_ext.h:
-
-/usr/include/bits/thread-shared-types.h:
 
 /usr/include/bits/types/sigset_t.h:
 
@@ -498,6 +518,18 @@ CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o:
 /usr/include/time.h:
 
 /usr/lib/gcc/x86_64-redhat-linux/15/include/stdarg.h:
+
+/usr/include/bits/timesize.h:
+
+/usr/include/bits/waitstatus.h:
+
+/usr/include/bits/wordsize.h:
+
+/usr/include/curses.h:
+
+/usr/include/bits/sigcontext.h:
+
+/usr/include/features-time64.h:
 
 /usr/include/gnu/stubs-64.h:
 
@@ -514,6 +546,8 @@ CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o:
 /usr/include/bits/cpu-set.h:
 
 /usr/include/ncurses_dll.h:
+
+/usr/include/pthread.h:
 
 /usr/include/stdint.h:
 
@@ -549,18 +583,6 @@ CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o:
 
 /usr/include/bits/posix_opt.h:
 
-/usr/include/bits/pthread_stack_min-dynamic.h:
-
-/usr/include/bits/sigthread.h:
-
-/usr/include/bits/pthread_stack_min.h:
-
-/usr/include/bits/setjmp.h:
-
-/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/soc_dashboard.c:
-
-/usr/include/bits/types/struct___jmp_buf_tag.h:
-
 /usr/include/bits/types/time_t.h:
 
 /usr/include/bits/struct_stat.h:
@@ -574,8 +596,6 @@ CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o:
 /usr/include/fcntl.h:
 
 /usr/include/bits/fp-fast.h:
-
-/usr/include/pthread.h:
 
 /usr/include/unistd.h:
 
