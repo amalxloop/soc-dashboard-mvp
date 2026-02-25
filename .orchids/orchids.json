@@ -1,0 +1,9 @@
+{
+  "projectId": "77b90fae-817c-45d2-990a-69e6f5d22717",
+  "createdAt": 1772034945554,
+  "version": "1.0",
+  "startupCommands": [
+    "cd silvercore-kernel && cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DSC_TESTS=OFF && cmake --build build -j$(nproc) && ./build/soc_dashboard"
+  ],
+  "templateId": "any"
+}
