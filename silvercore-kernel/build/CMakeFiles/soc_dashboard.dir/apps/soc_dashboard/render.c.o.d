@@ -1,6 +1,7 @@
-CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o: \
- /home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/soc_dashboard.c \
+CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.o: \
+ /home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/render.c \
  /usr/include/stdc-predef.h \
+ /home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/render.h \
  /home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/types.h \
  /usr/lib/gcc/x86_64-redhat-linux/15/include/stdint.h \
  /usr/include/stdint.h /usr/include/bits/libc-header-start.h \
@@ -14,14 +15,12 @@ CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o: \
  /usr/include/bits/stdint-least.h \
  /usr/lib/gcc/x86_64-redhat-linux/15/include/stdbool.h \
  /usr/lib/gcc/x86_64-redhat-linux/15/include/stdatomic.h \
- /home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/rng.h \
  /home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/task_queue.h \
  /usr/include/string.h \
  /usr/lib/gcc/x86_64-redhat-linux/15/include/stddef.h \
  /usr/include/bits/types/locale_t.h /usr/include/bits/types/__locale_t.h \
- /usr/include/strings.h \
- /home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/render.h \
- /usr/include/curses.h /usr/include/ncurses_dll.h /usr/include/stdio.h \
+ /usr/include/strings.h /usr/include/curses.h /usr/include/ncurses_dll.h \
+ /usr/include/stdio.h \
  /usr/lib/gcc/x86_64-redhat-linux/15/include/stdarg.h \
  /usr/include/bits/types/__fpos_t.h /usr/include/bits/types/__mbstate_t.h \
  /usr/include/bits/types/__fpos64_t.h /usr/include/bits/types/__FILE.h \
@@ -45,31 +44,12 @@ CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o: \
  /usr/include/bits/types/__sigset_t.h \
  /usr/include/bits/types/struct___jmp_buf_tag.h \
  /usr/include/bits/pthread_stack_min-dynamic.h \
- /usr/include/bits/pthread_stack_min.h /usr/include/stdlib.h \
- /usr/include/bits/waitflags.h /usr/include/bits/waitstatus.h \
- /usr/include/sys/types.h /usr/include/endian.h \
- /usr/include/bits/byteswap.h /usr/include/bits/uintn-identity.h \
- /usr/include/sys/select.h /usr/include/bits/select.h \
- /usr/include/bits/types/sigset_t.h \
+ /usr/include/bits/pthread_stack_min.h \
+ /home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/rng.h \
+ /usr/include/stdlib.h /usr/include/bits/waitflags.h \
+ /usr/include/bits/waitstatus.h /usr/include/sys/types.h \
+ /usr/include/endian.h /usr/include/bits/byteswap.h \
+ /usr/include/bits/uintn-identity.h /usr/include/sys/select.h \
+ /usr/include/bits/select.h /usr/include/bits/types/sigset_t.h \
  /usr/include/bits/types/struct_timeval.h /usr/include/alloca.h \
- /usr/include/bits/stdlib-bsearch.h /usr/include/bits/stdlib-float.h \
- /usr/include/math.h /usr/include/bits/math-vector.h \
- /usr/include/bits/libm-simd-decl-stubs.h \
- /usr/include/bits/flt-eval-method.h /usr/include/bits/fp-logb.h \
- /usr/include/bits/fp-fast.h /usr/include/bits/mathcalls-macros.h \
- /usr/include/bits/mathcalls-helper-functions.h \
- /usr/include/bits/mathcalls.h /usr/include/signal.h \
- /usr/include/bits/signum-generic.h /usr/include/bits/signum-arch.h \
- /usr/include/bits/types/sig_atomic_t.h \
- /usr/include/bits/types/siginfo_t.h /usr/include/bits/types/__sigval_t.h \
- /usr/include/bits/siginfo-arch.h /usr/include/bits/siginfo-consts.h \
- /usr/include/bits/types/sigval_t.h /usr/include/bits/types/sigevent_t.h \
- /usr/include/bits/sigevent-consts.h /usr/include/bits/sigaction.h \
- /usr/include/bits/sigcontext.h /usr/include/bits/types/stack_t.h \
- /usr/include/sys/ucontext.h /usr/include/bits/sigstack.h \
- /usr/include/bits/sigstksz.h /usr/include/bits/ss_flags.h \
- /usr/include/bits/types/struct_sigstack.h /usr/include/bits/sigthread.h \
- /usr/include/bits/signal_ext.h /usr/include/unistd.h \
- /usr/include/bits/posix_opt.h /usr/include/bits/environments.h \
- /usr/include/bits/confname.h /usr/include/bits/getopt_posix.h \
- /usr/include/bits/getopt_core.h /usr/include/bits/unistd_ext.h
+ /usr/include/bits/stdlib-bsearch.h /usr/include/bits/stdlib-float.h

@@ -1,1 +1,1 @@
-/usr/bin/cc -O3 -DNDEBUG -Wl,--dependency-file=CMakeFiles/soc_dashboard.dir/link.d CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o -o soc_dashboard  -lm -lpthread -lcurses /usr/lib64/libform.so
+/usr/bin/cc -O3 -DNDEBUG -Wl,--dependency-file=CMakeFiles/soc_dashboard.dir/link.d CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/rng.c.o CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.o -o soc_dashboard  -lm -lpthread -lcurses /usr/lib64/libform.so

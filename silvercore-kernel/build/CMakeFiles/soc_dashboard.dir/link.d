@@ -3,6 +3,8 @@ soc_dashboard: \
   /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crti.o \
   /usr/lib/gcc/x86_64-redhat-linux/15/crtbegin.o \
   CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o \
+  CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/rng.c.o \
+  CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.o \
   /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/libm.so \
   /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/libm.so \
   /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/libm.so \
@@ -47,6 +49,10 @@ soc_dashboard: \
 /usr/lib/gcc/x86_64-redhat-linux/15/crtbegin.o:
 
 CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o:
+
+CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/rng.c.o:
+
+CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.o:
 
 /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/libm.so:
 

@@ -4,7 +4,7 @@
 # compile C with /usr/bin/cc
 C_DEFINES = 
 
-C_INCLUDES = -I/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/include
+C_INCLUDES = -I/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/include -I/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard
 
 C_FLAGS = -O3 -DNDEBUG -std=gnu11 -Wall -Wextra -Wpedantic -Wno-unused-parameter -O3 -march=native -ffast-math
 

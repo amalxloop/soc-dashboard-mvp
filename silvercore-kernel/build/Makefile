@@ -213,6 +213,54 @@ soc_dashboard/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/soc_dashboard.dir/build.make CMakeFiles/soc_dashboard.dir/build
 .PHONY : soc_dashboard/fast
 
+apps/soc_dashboard/render.o: apps/soc_dashboard/render.c.o
+.PHONY : apps/soc_dashboard/render.o
+
+# target to build an object file
+apps/soc_dashboard/render.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/soc_dashboard.dir/build.make CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.o
+.PHONY : apps/soc_dashboard/render.c.o
+
+apps/soc_dashboard/render.i: apps/soc_dashboard/render.c.i
+.PHONY : apps/soc_dashboard/render.i
+
+# target to preprocess a source file
+apps/soc_dashboard/render.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/soc_dashboard.dir/build.make CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.i
+.PHONY : apps/soc_dashboard/render.c.i
+
+apps/soc_dashboard/render.s: apps/soc_dashboard/render.c.s
+.PHONY : apps/soc_dashboard/render.s
+
+# target to generate assembly for a file
+apps/soc_dashboard/render.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/soc_dashboard.dir/build.make CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.s
+.PHONY : apps/soc_dashboard/render.c.s
+
+apps/soc_dashboard/rng.o: apps/soc_dashboard/rng.c.o
+.PHONY : apps/soc_dashboard/rng.o
+
+# target to build an object file
+apps/soc_dashboard/rng.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/soc_dashboard.dir/build.make CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/rng.c.o
+.PHONY : apps/soc_dashboard/rng.c.o
+
+apps/soc_dashboard/rng.i: apps/soc_dashboard/rng.c.i
+.PHONY : apps/soc_dashboard/rng.i
+
+# target to preprocess a source file
+apps/soc_dashboard/rng.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/soc_dashboard.dir/build.make CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/rng.c.i
+.PHONY : apps/soc_dashboard/rng.c.i
+
+apps/soc_dashboard/rng.s: apps/soc_dashboard/rng.c.s
+.PHONY : apps/soc_dashboard/rng.s
+
+# target to generate assembly for a file
+apps/soc_dashboard/rng.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/soc_dashboard.dir/build.make CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/rng.c.s
+.PHONY : apps/soc_dashboard/rng.c.s
+
 apps/soc_dashboard/soc_dashboard.o: apps/soc_dashboard/soc_dashboard.c.o
 .PHONY : apps/soc_dashboard/soc_dashboard.o
 
@@ -304,6 +352,12 @@ help:
 	@echo "... sc_kernel_static"
 	@echo "... soc_dashboard"
 	@echo "... stock_dashboard"
+	@echo "... apps/soc_dashboard/render.o"
+	@echo "... apps/soc_dashboard/render.i"
+	@echo "... apps/soc_dashboard/render.s"
+	@echo "... apps/soc_dashboard/rng.o"
+	@echo "... apps/soc_dashboard/rng.i"
+	@echo "... apps/soc_dashboard/rng.s"
 	@echo "... apps/soc_dashboard/soc_dashboard.o"
 	@echo "... apps/soc_dashboard/soc_dashboard.i"
 	@echo "... apps/soc_dashboard/soc_dashboard.s"

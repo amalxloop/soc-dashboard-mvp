@@ -86,20 +86,52 @@ CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/soc_dashboard.c -o CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.s
 
+CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/rng.c.o: CMakeFiles/soc_dashboard.dir/flags.make
+CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/rng.c.o: /home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/rng.c
+CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/rng.c.o: CMakeFiles/soc_dashboard.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/rng.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/rng.c.o -MF CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/rng.c.o.d -o CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/rng.c.o -c /home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/rng.c
+
+CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/rng.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/rng.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/rng.c > CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/rng.c.i
+
+CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/rng.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/rng.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/rng.c -o CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/rng.c.s
+
+CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.o: CMakeFiles/soc_dashboard.dir/flags.make
+CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.o: /home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/render.c
+CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.o: CMakeFiles/soc_dashboard.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.o -MF CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.o.d -o CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.o -c /home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/render.c
+
+CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/render.c > CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.i
+
+CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/apps/soc_dashboard/render.c -o CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.s
+
 # Object files for target soc_dashboard
 soc_dashboard_OBJECTS = \
-"CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o"
+"CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o" \
+"CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/rng.c.o" \
+"CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.o"
 
 # External object files for target soc_dashboard
 soc_dashboard_EXTERNAL_OBJECTS =
 
 soc_dashboard: CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/soc_dashboard.c.o
+soc_dashboard: CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/rng.c.o
+soc_dashboard: CMakeFiles/soc_dashboard.dir/apps/soc_dashboard/render.c.o
 soc_dashboard: CMakeFiles/soc_dashboard.dir/build.make
 soc_dashboard: CMakeFiles/soc_dashboard.dir/compiler_depend.ts
 soc_dashboard: /usr/lib64/libcurses.so
 soc_dashboard: /usr/lib64/libform.so
 soc_dashboard: CMakeFiles/soc_dashboard.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable soc_dashboard"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C executable soc_dashboard"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/soc_dashboard.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

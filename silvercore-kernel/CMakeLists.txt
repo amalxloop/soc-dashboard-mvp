@@ -115,9 +115,12 @@ find_package(Curses REQUIRED)
 
 add_executable(soc_dashboard
     ${CMAKE_SOURCE_DIR}/apps/soc_dashboard/soc_dashboard.c
+    ${CMAKE_SOURCE_DIR}/apps/soc_dashboard/rng.c
+    ${CMAKE_SOURCE_DIR}/apps/soc_dashboard/render.c
 )
 target_include_directories(soc_dashboard PRIVATE
     ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/apps/soc_dashboard
     ${CURSES_INCLUDE_DIRS}
 )
 target_link_libraries(soc_dashboard PRIVATE m pthread ${CURSES_LIBRARIES})

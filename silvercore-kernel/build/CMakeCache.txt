@@ -234,6 +234,9 @@ SC_TESTS:BOOL=OFF
 //Enable UndefinedBehaviourSanitizer
 SC_UBSAN:BOOL=OFF
 
+//No help, variable specified on the command line.
+SILVERCORE_SKIP_WASM:UNINITIALIZED=ON
+
 //Value Computed by CMake
 SilverCore_BINARY_DIR:STATIC=/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/build
 
