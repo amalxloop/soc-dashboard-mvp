@@ -1,0 +1,10 @@
+/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/build/CMakeFiles/sc_kernel_static.dir
+/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/build/CMakeFiles/sc_kernel.dir
+/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/build/CMakeFiles/stock_dashboard.dir
+/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/build/CMakeFiles/soc_dashboard.dir
+/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/build/CMakeFiles/edit_cache.dir
+/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/build/CMakeFiles/rebuild_cache.dir
+/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/build/CMakeFiles/list_install_components.dir
+/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/build/CMakeFiles/install.dir
+/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/build/CMakeFiles/install/local.dir
+/home/kiraxploit/orchids-projects/soc-dashboard-mvp/silvercore-kernel/build/CMakeFiles/install/strip.dir

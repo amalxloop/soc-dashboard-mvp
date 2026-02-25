@@ -1,0 +1,1 @@
+/usr/bin/cc -fPIC -O3 -DNDEBUG -Wl,--dependency-file=CMakeFiles/sc_kernel.dir/link.d -shared -Wl,-soname,libsc_kernel.so.0 -o libsc_kernel.so.0.1.0 CMakeFiles/sc_kernel.dir/sc_kernel.c.o  -lm
